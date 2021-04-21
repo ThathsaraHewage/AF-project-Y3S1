@@ -1,9 +1,3 @@
-/*
-*
-* N.I.T.Hewage
-* CRUD operations with nodejs,express using mongodb cloud database
-*
-* */
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser"); 

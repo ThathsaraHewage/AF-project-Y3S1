@@ -1,9 +1,3 @@
-/*
-*
-* N.I.T.Hewage
-* CRUD operations with nodejs,express using mongodb cloud database
-*
-* */
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;

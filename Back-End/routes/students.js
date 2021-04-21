@@ -1,10 +1,3 @@
-/*
-*
-* N.I.T.Hewage
-* CRUD operations with nodejs,express using mongodb cloud database
-*
-* */
-
 //importing express router modules
 const router = require("express").Router();
 
