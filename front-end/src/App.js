@@ -1,16 +1,22 @@
-
+import { BrowserRouter as Router,Route} from "react-router-dom";
 import Navbar from './Components/Navbar';
 import Signup from './Components/Signup';
-import {BrowserRouter as Router,Route} from "react-router-dom"
+import Header from './Components/Header';
+import Login from './Components/Login';
 
 function App() {
   return (
-    <Router> 
+    
+    <Router>
       <div>
         <Navbar/>
-        <Route path="/Signup" exact component ={Signup}/>     
-      </div>
-    </Router> 
+        <Route path="/login" exact component ={Login}/>
+        <Route path="/signup" exact component ={Signup}/>
+        <Route path="/home" exact component ={Header}/>
+        
+      </div>  
+    </Router>
+     
   );
 }
 
