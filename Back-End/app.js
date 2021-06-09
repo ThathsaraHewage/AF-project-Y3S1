@@ -1,6 +1,4 @@
 require('dotenv').config();
-
-
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
@@ -15,7 +13,7 @@ const workshopRoutes = require("./routes/workshopRoutes");
 const researchPaperRoutes = require("./routes/researchPaperRoutes");
 
 //conferece routes
-const conferenceRoutes = require("./routes/conference");
+//const conferenceRoutes = require("./routes/addConference");
 
 //DB Connection
 mongoose.connect(process.env.DATABASE, {
@@ -38,7 +36,9 @@ app.use("/api", userRoutes );
 app.use("/api", workshopRoutes );
 app.use("/api", researchPaperRoutes );
 
-app.use("/api",conferenceRoutes);
+
+//add conference details routes
+//app.use("/api",conferenceRoutes);
 
 
 //Port

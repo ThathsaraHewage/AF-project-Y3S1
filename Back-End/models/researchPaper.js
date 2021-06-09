@@ -23,6 +23,10 @@ const productShema = new mongoose.Schema({
     numberofpages:{
         type: Number
     },
+    ApprovalStatus:{
+        type:String,
+        default:"Approval Pending"
+    },
     photo:{
         data: Buffer,
         contentType: String

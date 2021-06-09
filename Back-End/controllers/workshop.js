@@ -53,17 +53,17 @@ exports.getCategoryById = (req, res, next, id) => {
     });
   };
   
-  exports.removeCategory = (req, res) => {
+  exports.removeWorkshop = (req, res) => {
     const category = req.category;
   
     category.remove((err, category) => {
       if (err) {
         return res.status(400).json({
-          error: "Failed to delete this category"
+          error: "Failed to delete the workshop"
         });
       }
       res.json({
-        message: "Successfull deleted"
+        message: "Successfull deleted workshop"
       });
     });
   };
