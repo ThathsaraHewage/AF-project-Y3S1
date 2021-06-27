@@ -131,8 +131,8 @@ exports.updateProduct = (req,res) => {
   });
 };
 
-//listing product controller
-exports.getAllProducts = (req,res) => {
+//listing all research papers controller
+exports.getAllResearchPapers = (req,res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 8 ;
     let sortBy = req.query.sortBy ? req.query.sortBy : "_id" ;
 
@@ -150,6 +150,28 @@ exports.getAllProducts = (req,res) => {
         res.json(products);
     });
 }
+
+
+//listing all approved research papers controller
+exports.getAllApprovedsResearchPapers = (req,res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 8 ;
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id" ;
+
+  Product.find({"ApprovalStatus":"Approved"})
+  .select("-photo")
+  .populate("category")
+  .sort([[ sortBy, "asc"]])
+  .limit(limit)
+  .exec((err, products) => {
+      if (err) {
+          return res.status(400).json({
+              error: "NO products found"
+          });
+      }
+      res.json(products);
+  });
+}
+
 
 exports.getAllUniqueCategories = (req, res) => {
     Product.distinct("category", {}, (err, category) => {

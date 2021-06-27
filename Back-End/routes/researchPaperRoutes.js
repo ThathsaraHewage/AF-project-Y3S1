@@ -7,7 +7,8 @@ const { getProductById,
         photo,
         removeProduct,
         updateProduct,
-        getAllProducts,
+        getAllResearchPapers,
+        getAllApprovedsResearchPapers,
         getAllUniqueCategories} = require("../controllers/researchPapers");
 const { isSignedIn, isAuthenticated, isAdmin } = require("../controllers/auth");
 const { getUserById } = require("../controllers/user");
@@ -34,8 +35,11 @@ router.put("/product/:productId/:userId",isSignedIn, isAuthenticated, isAdmin, u
 //delete routes
 router.delete("/product/:productId/:userId",isSignedIn, isAuthenticated, isAdmin, removeProduct);
 
-//listing route
-router.get("/products",getAllProducts);
+//listing all research papers route
+router.get("/research-papers",getAllResearchPapers);
+
+//listing all approved research paper route
+router.get("/approved/research-papers",getAllApprovedsResearchPapers);
 
 //router.get("/products/categories", getAllUniqueCategories);
 
