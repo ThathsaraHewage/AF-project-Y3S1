@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const categorySchema = new mongoose.Schema({
+const conferenceSchema = new mongoose.Schema({
     name:{
         type: String,
         trim: true,
@@ -48,4 +48,4 @@ const categorySchema = new mongoose.Schema({
 },{timestamps: true});
 
 
-module.exports = mongoose.model("Workshops", categorySchema);
+module.exports = mongoose.model("Conference", conferenceSchema);

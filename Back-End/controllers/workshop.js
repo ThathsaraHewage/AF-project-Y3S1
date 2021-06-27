@@ -27,18 +27,33 @@ exports.getCategoryById = (req, res, next, id) => {
   exports.getCategory = (req, res) => {
     return res.json(req.category);
   };
-  
-  exports.getAllCategory = (req, res) => {
-    Category.find().exec((err, categories) => {
+ 
+//DISPLAY ALL WORKSHOPS TO REGISTER FOR ATTENDEE  
+  exports.getAllApprovedWorkshops = (req, res) => {
+    Category.find().exec((err, workshops) => {
       if (err) {
         return res.status(400).json({
-          error: "NO categories found"
+          error: "NO workshop found"
         });
       }
-      res.json(categories);
+      res.json(workshops);
     });
   };
   
+
+   
+//DISPLAY ALL WORKSHOPS   
+exports.getAllWorkshops = (req, res) => {
+  Category.find({"ApprovalStatus":"approved"}).exec((err, workshops) => {
+    if (err) {
+      return res.status(400).json({
+        error: "NO workshop found"
+      });
+    }
+    res.json(workshops);
+  });
+};
+
   exports.updateCategory = (req, res) => {
     const category = req.category;
     category.name = req.body.name;
@@ -46,13 +61,14 @@ exports.getCategoryById = (req, res, next, id) => {
     category.save((err, updatedCategory) => {
       if (err) {
         return res.status(400).json({
-          error: "Failed to update category"
+          error: "Failed to update workshop!"
         });
       }
       res.json(updatedCategory);
     });
   };
   
+//REMOVE WORKSHOP
   exports.removeWorkshop = (req, res) => {
     const category = req.category;
   
@@ -68,3 +84,14 @@ exports.getCategoryById = (req, res, next, id) => {
     });
   };
   
+//DISPLAY ONLY APPROVED WORKSHOPS
+exports.getAllApprovedWorkshops = (req, res) => {
+  Category.find().exec((err, categories) => {
+    if (err) {
+      return res.status(400).json({
+        error: "NO workshop found"
+      });
+    }
+    res.json(categories);
+  });
+};

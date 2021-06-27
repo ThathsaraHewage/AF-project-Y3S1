@@ -101,7 +101,7 @@ exports.isAdmin = (req, res, next) => {
 exports.isEditor = (req, res, next) => {
     if (req.profile.role === 4) {
         return res.status(403).json({
-            error: "Not a member, Access Denied !"
+            error: "Not an editor, Access Denied !"
         });
     }
     next();

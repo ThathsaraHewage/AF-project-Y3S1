@@ -11,9 +11,8 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const workshopRoutes = require("./routes/workshopRoutes");
 const researchPaperRoutes = require("./routes/researchPaperRoutes");
+// const conferenceRoutes = require("./routes/ConferenceRoutes");
 
-//conferece routes
-//const conferenceRoutes = require("./routes/addConference");
 
 //DB Connection
 mongoose.connect(process.env.DATABASE, {
@@ -35,11 +34,7 @@ app.use("/api", authRoutes );
 app.use("/api", userRoutes );
 app.use("/api", workshopRoutes );
 app.use("/api", researchPaperRoutes );
-
-
-//add conference details routes
-//app.use("/api",conferenceRoutes);
-
+// app.use("/api", conferenceRoutes );
 
 //Port
 const port = process.env.PORT || 8000;

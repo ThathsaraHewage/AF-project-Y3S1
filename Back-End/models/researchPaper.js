@@ -25,7 +25,7 @@ const productShema = new mongoose.Schema({
     },
     ApprovalStatus:{
         type:String,
-        default:"Approval Pending"
+        default:"Pending"
     },
     photo:{
         data: Buffer,

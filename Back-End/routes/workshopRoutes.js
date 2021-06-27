@@ -5,7 +5,8 @@ const {
   getCategoryById,
   createWorkshop,
   getCategory,
-  getAllCategory,
+  getAllWorkshops,
+  getAllApprovedWorkshops,
   updateCategory,
   removeWorkshop
 } = require("../controllers/workshop");
@@ -25,9 +26,10 @@ router.post(
   createWorkshop
 );
 
-//read
+//read and fetch data from database
 router.get("/category/:categoryId", getCategory);
-router.get("/categories", getAllCategory);
+router.get("/workshops", getAllWorkshops);
+router.get("/register-workshops", getAllApprovedWorkshops);
 
 //update
 router.put(
