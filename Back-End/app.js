@@ -11,6 +11,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const workshopRoutes = require("./routes/workshopRoutes");
 const researchPaperRoutes = require("./routes/researchPaperRoutes");
+const researchPaperPaymentsRoutes = require("./routes/ResearchPaperPaymentRoutes");
 // const conferenceRoutes = require("./routes/ConferenceRoutes");
 
 
@@ -34,6 +35,7 @@ app.use("/api", authRoutes );
 app.use("/api", userRoutes );
 app.use("/api", workshopRoutes );
 app.use("/api", researchPaperRoutes );
+app.use("/api",researchPaperPaymentsRoutes);
 // app.use("/api", conferenceRoutes );
 
 //Port

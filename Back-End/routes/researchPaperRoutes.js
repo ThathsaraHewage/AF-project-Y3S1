@@ -25,6 +25,7 @@ router.post(
   isAdmin,
   addResearchPaper 
 );
+
 //read routes
 router.get("/product/:productId", getProduct);
 router.get("/product/photo/:productId", photo);
