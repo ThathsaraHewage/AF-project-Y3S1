@@ -25,6 +25,8 @@ import ApprovedEvents from "./admin/ApprovedEvents";
 import NotApprovedEvents from "./admin/NotApprovedEvents";
 import AdminUpdateEvent from "./admin/AdminUpdateEvent";
 import ShowNews from "./core/ShowNews";
+import EditorSignup from "./admin/EditorSignup";
+import ReviewerSignup from "./admin/ReviewerSignup";
 
 
 const Routes = () => {
@@ -52,6 +54,8 @@ const Routes = () => {
         <AdminRoutes path="/admin/yesevents" exact component={ApprovedEvents} />       
         <AdminRoutes path="/admin/noevents" exact component={NotApprovedEvents} />       
         <AdminRoutes path="/admin/event/update/:eventId" exact component={AdminUpdateEvent} />       
+        <AdminRoutes path="/admin/create/editor" exact component={EditorSignup} />       
+        <AdminRoutes path="/admin/create/reviewer" exact component={ReviewerSignup} />       
 
       </Switch>
     </BrowserRouter>

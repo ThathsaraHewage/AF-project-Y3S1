@@ -21,6 +21,12 @@ const AdminDashBoard = () => {
           <li className="list-group-item">
               <Link to="/admin/noevents" className="nav-link text-success">Not Approved Events</Link>
           </li>
+          <li className="list-group-item">
+              <Link to="/admin/create/editor" className="nav-link text-success">Add Editor</Link>
+          </li>
+          <li className="list-group-item">
+              <Link to="/admin/create/reviewer" className="nav-link text-success">Add Reviewer</Link>
+          </li>
         </ul>
       </div>
     );
