@@ -3,6 +3,7 @@ const { check, validationResult } = require('express-validator'); //from express
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt'); 
 
+////////////////signup function///////////////////////
 exports.signup = (req,res) => {
 
     const errors = validationResult(req);
@@ -27,6 +28,7 @@ exports.signup = (req,res) => {
     });
 };
 
+//////////////////////Signin function/////////////////////////////
 exports.signin = (req, res) => {
     const errors = validationResult(req);
     const {email,password} = req.body;
@@ -34,14 +36,13 @@ exports.signin = (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(422).json({
             error : errors.array()[0].msg
-            //param : errors.array()[0].param,
         });
     }
 
     User.findOne({email}, (error , user) => {
         if(error || !user){
             return res.status(400).json({
-                error: "USER email does not exists"
+                error: "Entered email does not exists!"
             })
         }
 
@@ -62,7 +63,7 @@ exports.signin = (req, res) => {
     });
 }
 
-
+//////////////////Signout function/////////////////////
 exports.signout = (req,res) => {
     res.clearCookie("token");
     res.json({
@@ -70,15 +71,13 @@ exports.signout = (req,res) => {
     });
 };
 
-//protected route
+//////////////////////protected route///////////////////
 exports.isSignedIn = expressJwt({
     secret: process.env.SECRET,
     userProperty : "auth"
 });
 
-
-
-//custom middlewares
+///////////////////custom middlewares///////////////////
 exports.isAuthenticated = (req, res, next) => {
     let checker = req.profile && req.auth && req.profile._id == req.auth._id;
     if (!checker) {
@@ -89,6 +88,7 @@ exports.isAuthenticated = (req, res, next) => {
     next();
 }
 
+/////////////////////////check admin////////////////////
 exports.isAdmin = (req, res, next) => {
     if (req.profile.role === 0) {
         return res.status(403).json({
@@ -98,6 +98,7 @@ exports.isAdmin = (req, res, next) => {
     next();
 }
 
+/////////////////////////Check editor//////////////////
 exports.isEditor = (req, res, next) => {
     if (req.profile.role === 4) {
         return res.status(403).json({

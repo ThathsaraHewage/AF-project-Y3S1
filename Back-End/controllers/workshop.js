@@ -1,36 +1,29 @@
-const Category = require("../models/workshop.js");
+const Workshop = require("../models/workshop.js");
 
-exports.getCategoryById = (req, res, next, id) => {
-    Category.findById(id).exec((err, cate) => {
-      if (err) {
-        return res.status(400).json({
-          error: "Category not found in DB"
-        });
-      }
-      req.category = cate;
-      next();
-    });
-  };
-  
+//////////////////////////////////////////////////////////
+//+++++++++++++++++++ WORKSHOP CONDUCTOR /////////////////
+//////////////////////////////////////////////////////////
+
+////////////////////create a new workshop/////////////////
   exports.createWorkshop = (req, res) => {
-    const category = new Category(req.body);
-    category.save((err, category) => {
+    const workshop = new Workshop(req.body);
+    workshop.save((err, workshop) => {
       if (err) {
         return res.status(400).json({
           error: "NOT able to submit workshop details !"
         });
       }
-      res.json({ category });
+      res.json({ workshop });
     });
   };
-  
   exports.getCategory = (req, res) => {
-    return res.json(req.category);
+    return res.json(req.workshop);
   };
  
-//DISPLAY ALL WORKSHOPS TO REGISTER FOR ATTENDEE  
+
+///////////DISPLAY ALL WORKSHOPS TO REGISTER FOR ATTENDEE////  
   exports.getAllApprovedWorkshops = (req, res) => {
-    Category.find().exec((err, workshops) => {
+    Workshop.find().exec((err, workshops) => {
       if (err) {
         return res.status(400).json({
           error: "NO workshop found"
@@ -42,9 +35,9 @@ exports.getCategoryById = (req, res, next, id) => {
   
 
    
-//DISPLAY ALL WORKSHOPS   
+/////////////////////DISPLAY ALL WORKSHOPS////////////////////
 exports.getAllWorkshops = (req, res) => {
-  Category.find({"ApprovalStatus":"approved"}).exec((err, workshops) => {
+  Workshop.find({"ApprovalStatus":"approved"}).exec((err, workshops) => {
     if (err) {
       return res.status(400).json({
         error: "NO workshop found"
@@ -54,25 +47,12 @@ exports.getAllWorkshops = (req, res) => {
   });
 };
 
-  exports.updateCategory = (req, res) => {
-    const category = req.category;
-    category.name = req.body.name;
-  
-    category.save((err, updatedCategory) => {
-      if (err) {
-        return res.status(400).json({
-          error: "Failed to update workshop!"
-        });
-      }
-      res.json(updatedCategory);
-    });
-  };
-  
-//REMOVE WORKSHOP
+
+//////////////////////////REMOVE WORKSHOP//////////////////////
   exports.removeWorkshop = (req, res) => {
-    const category = req.category;
+    const workshop = req.workshop;
   
-    category.remove((err, category) => {
+    workshop.remove((err, workshop) => {
       if (err) {
         return res.status(400).json({
           error: "Failed to delete the workshop"
@@ -84,14 +64,39 @@ exports.getAllWorkshops = (req, res) => {
     });
   };
   
-//DISPLAY ONLY APPROVED WORKSHOPS
+/////////////////DISPLAY ONLY APPROVED WORKSHOPS/////////////////
 exports.getAllApprovedWorkshops = (req, res) => {
-  Category.find().exec((err, categories) => {
+  Workshop.find().exec((err, workshops) => {
     if (err) {
       return res.status(400).json({
         error: "NO workshop found"
       });
     }
-    res.json(categories);
+    res.json(workshops);
   });
 };
+exports.getCategoryById = (req, res, next, id) => {
+  Workshop.findById(id).exec((err, cate) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Category not found in DB"
+      });
+    }
+    req.workshop = cate;
+    next();
+  });
+};
+exports.updateCategory = (req, res) => {
+  const workshop = req.workshop;
+  workshop.name = req.body.name;
+
+  workshop.save((err, updatedDetails) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Failed to update workshop!"
+      });
+    }
+    res.json(updatedDetails);
+  });
+};
+

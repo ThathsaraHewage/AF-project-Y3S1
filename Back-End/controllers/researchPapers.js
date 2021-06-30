@@ -1,23 +1,30 @@
-const Product = require("../models/researchPaper.js");
+const Document = require("../models/researchPaper.js");
 const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
 const { sortBy } = require("lodash");
 
+////////////////////////////////////////////////////////////////////
+//+++++++++++++++ RESEARCHER - Controllers +++++++++++++++++++++++//
+////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////get items by id///////////////////////////
 exports.getProductById = (req, res, next, id) => {
-  Product.findById(id)
+  Document.findById(id)
     .populate("category")
-    .exec((err, product) => {
+    .exec((err, document) => {
       if (err) {
         return res.status(400).json({
-          error: "Product not found"
+          error: "Document not found"
         });
       }
-      req.product = product;
+      req.document = document;
       next();
     });
 };
 
+///////////////////upload research papers to ICAF DBs///////////////
 exports.addResearchPaper = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
@@ -25,20 +32,21 @@ exports.addResearchPaper = (req, res) => {
   form.parse(req, (err, fields, file) => {
     if (err) {
       return res.status(400).json({
-        error: "problem with image"
+        error: "problem with document !"
       });
     }
 
-    //Destructuring the feilds//
+    //Destructuring the feilds
     const{ title, description, authorsnames, numberofpages} = fields;
 
+    //validating input fields
     if (!title || !description || !authorsnames || !numberofpages) {
         return res.status(400).json({
             error:"Sorry ! Please include all fields"
         });
     }
 
-    let product = new Product(fields);
+    let document = new Document(fields);
 
     //handle file here
     if (file.photo) {
@@ -47,24 +55,24 @@ exports.addResearchPaper = (req, res) => {
           error: "File size too big!"
         });
       }
-      product.photo.data = fs.readFileSync(file.photo.path)
-      product.photo.contentType = file.photo.type;
+      document.photo.data = fs.readFileSync(file.photo.path)
+      document.photo.contentType = file.photo.type;
     }
 
-    //save to the DB
-    product.save((err, product) => {
+    //save all data to the DB
+    document.save((err, document) => {
       if (err) {
         res.status(400).json({
           error: "Saving in DB failed"
         });
       }
-      res.json(product);
+      res.json(document);
     });
   });
 };
 
 
-
+/////////////////////////Researcher make payments/////////////////////
 exports.MakePaymentsResearchPaper = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
@@ -85,7 +93,7 @@ exports.MakePaymentsResearchPaper = (req, res) => {
         });
     }
 
-    let product = new Product(fields);
+    let document = new Document(fields);
 
     //handle file here
     if (file.photo) {
@@ -94,55 +102,55 @@ exports.MakePaymentsResearchPaper = (req, res) => {
           error: "File size too big!"
         });
       }
-      product.photo.data = fs.readFileSync(file.photo.path)
-      product.photo.contentType = file.photo.type;
+      document.photo.data = fs.readFileSync(file.photo.path)
+      document.photo.contentType = file.photo.type;
     }
 
     //save to the DB
-    product.save((err, product) => {
+    document.save((err, document) => {
       if (err) {
         res.status(400).json({
           error: "Saving in DB failed"
         });
       }
-      res.json(product);
+      res.json(document);
     });
   });
 };
 
 
-
+////////////////////////get items by id////////////////////////
 exports.getProduct = (req, res) => {
-    req.product.photo = undefined;
-    return res.json(req.product)
+    req.document.photo = undefined;
+    return res.json(req.document)
 };
 
-//middleware
+////////////////////////middleware/////////////////////////////
 exports.photo = (req, res, next) => {
-    if (req.product.photo.data) {
-        res.set("Content-Type", req.product.photo.contentType);
-        return res.send(req.product.photo.data);
+    if (req.document.photo.data) {
+        res.set("Content-Type", req.document.photo.contentType);
+        return res.send(req.document.photo.data);
     }
     next();
 };
 
-//delete product controller
+//////////////////////delete product///////////////////////////
 exports.removeProduct = (req,res) => {
-    const product = req.product;
+    const document = req.document;
   
-    product.remove((err, deletedProduct) => {
+    document.remove((err, deletedDocument) => {
       if (err) {
         return res.status(400).json({
-          error: "Failed to delete this product"
+          error: "Failed to delete this document !"
         });
       }
       res.json({
-        message: "Successfull deleted",deletedProduct
+        message: "Successfull deleted !",deletedDocument
       });
     });
 };
 
-//update product controller
+/////////////////////update research papers////////////////////
 exports.updateProduct = (req,res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
@@ -154,8 +162,8 @@ exports.updateProduct = (req,res) => {
       });
     }
     //updation code
-    let product =  req.product;
-    product = _.extend(product, fields);
+    let document =  req.document;
+    document = _.extend(document, fields);
 
     //handle file here
     if (file.photo) {
@@ -164,92 +172,73 @@ exports.updateProduct = (req,res) => {
           error: "File size too big!"
         });
       }
-      product.photo.data = fs.readFileSync(file.photo.path)
-      product.photo.contentType = file.photo.type;
+      document.photo.data = fs.readFileSync(file.photo.path)
+      document.photo.contentType = file.photo.type;
     }
 
     //save to the DB
-    product.save((err, product) => {
+    document.save((err, document) => {
       if (err) {
         res.status(400).json({
           error: "Updation of product failed"
         });
       }
-      res.json(product);
+      res.json(document);
     });
   });
 };
 
-//listing all research papers controller
+/////////////////listing all research papers controller//////////
 exports.getAllResearchPapers = (req,res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 8 ;
     let sortBy = req.query.sortBy ? req.query.sortBy : "_id" ;
 
-    Product.find()
+    Document.find()
     .select("-photo")
     .populate("category")
     .sort([[ sortBy, "asc"]])
     .limit(limit)
-    .exec((err, products) => {
+    .exec((err, documents) => {
         if (err) {
             return res.status(400).json({
-                error: "NO products found"
+                error: "NO documents found"
             });
         }
-        res.json(products);
+        res.json(documents);
     });
 }
 
 
-//listing all approved research papers controller
+///////////listing all approved research papers /////////////////
 exports.getAllApprovedsResearchPapers = (req,res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 8 ;
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id" ;
 
-  Product.find({"ApprovalStatus":"Approved"})
+  Document.find({"ApprovalStatus":"Approved"})
   .select("-photo")
   .populate("category")
   .sort([[ sortBy, "asc"]])
   .limit(limit)
-  .exec((err, products) => {
+  .exec((err, documents) => {
       if (err) {
           return res.status(400).json({
-              error: "NO products found"
+              error: "NO documents found"
           });
       }
-      res.json(products);
+      res.json(documents);
   });
 }
 
 
+///////////////////get all unique items///////////////////////////
 exports.getAllUniqueCategories = (req, res) => {
-    Product.distinct("category", {}, (err, category) => {
+    Document.distinct("category", {}, (err, category) => {
         if (err) {
             return res.status(400).json({
-                error: "NO category found"
+                error: "NO item found"
             });
         }
         res.json(category);
     });
 }
 
-exports.updateStock = (req, res, next) => {
-    let myOperation = req.body.order.products.map(prod => {
-        return {
-            updateOne :{
-                filter: {_id: prod._id},
-                update: {$inc: {stock: -prod.count, sold: +prod.count}}
-            }
-        }
-    })
-    
-    Product.bulkWrite(myOperation, {} , (err, products) => {
-        if (err) {
-            return res.status(400).json({
-                error: "Bulk operation failed"
-            });
-        }
-        next();
-    });
-    
-}

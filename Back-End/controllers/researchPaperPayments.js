@@ -1,23 +1,45 @@
-const Product = require("../models/researchpaperPayments.js");
+const PaymentsR = require("../models/researchpaperPayments.js");
 const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
 const { sortBy } = require("lodash");
 
+//listing all paid research papers to attendee controller
+exports.getAllResearchPapers = (req,res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 8 ;
+  let sortBy = req.query.sortBy ? req.query.sortBy : "_id" ;
+
+  PaymentsR.find()
+  .select("-photo")
+  .populate("category")
+  .sort([[ sortBy, "asc"]])
+  .limit(limit)
+  .exec((err, researchpapers) => {
+      if (err) {
+          return res.status(400).json({
+              error: "NO items found"
+          });
+      }
+      res.json(researchpapers);
+  });
+}
+
+////////////////////get items by id///////////////////////
 exports.getProductById = (req, res, next, id) => {
-  Product.findById(id)
+  PaymentsR.findById(id)
     .populate("category")
-    .exec((err, product) => {
+    .exec((err, paymentr) => {
       if (err) {
         return res.status(400).json({
           error: "Product not found"
         });
       }
-      req.product = product;
+      req.paymentr = paymentr;
       next();
     });
 };
 
+///////////////making payments by the researcher to present the papers at ICAF////////////
 exports.MakePaymentsResearchPaper = (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
@@ -32,13 +54,14 @@ exports.MakePaymentsResearchPaper = (req, res) => {
     //Destructuring the feilds//
     const{ title, description, authorsnames, holdersname,cardnumber,code} = fields;
 
+    //validating all input fields
     if (!title || !description || !authorsnames || !holdersname || !cardnumber || !code) {
         return res.status(400).json({
-            error:"Sorry ! Please include all fields plz"
+            error:"Sorry ! Please include all fields!"
         });
     }
 
-    let product = new Product(fields);
+    let paymentr = new PaymentsR(fields);
 
     //handle file here
     if (file.photo) {
@@ -47,34 +70,33 @@ exports.MakePaymentsResearchPaper = (req, res) => {
           error: "File size too big!"
         });
       }
-      product.photo.data = fs.readFileSync(file.photo.path)
-      product.photo.contentType = file.photo.type;
+      paymentr.photo.data = fs.readFileSync(file.photo.path)
+      paymentr.photo.contentType = file.photo.type;
     }
 
-    //save to the DB
-    product.save((err, product) => {
+    //save data to the DB
+    paymentr.save((err, paymentr) => {
       if (err) {
         res.status(400).json({
-          error: "Saving in DB failed baby"
+          error: "Saving in DB failed !"
         });
       }
-      res.json(product);
+      res.json(paymentr);
     });
   });
 };
 
-
-
+////////////////////get item by id////////////////
 exports.getProduct = (req, res) => {
-    req.product.photo = undefined;
-    return res.json(req.product)
+    req.paymentr.photo = undefined;
+    return res.json(req.paymentr)
 };
 
-//middleware
+/////////////////////middleware//////////////////
 exports.photo = (req, res, next) => {
-    if (req.product.photo.data) {
-        res.set("Content-Type", req.product.photo.contentType);
-        return res.send(req.product.photo.data);
+    if (req.paymentr.photo.data) {
+        res.set("Content-Type", req.paymentr.photo.contentType);
+        return res.send(req.paymentr.photo.data);
     }
     next();
 };

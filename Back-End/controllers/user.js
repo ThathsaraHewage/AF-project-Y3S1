@@ -1,10 +1,11 @@
 const User = require("../models/user.js");
 
+//////////////////////get user by id controller////////////////////////
 exports.getUserById = (req, res, next, id) =>{
     User.findById(id).exec((error, user) => {
         if (error || !user) {
             return res.status(400).json({
-                error: "No user was found in DB"
+                error: "No user was found in DB !"
             })
         }
         req.profile = user;
@@ -12,6 +13,7 @@ exports.getUserById = (req, res, next, id) =>{
     });
 };
 
+/////////////////////get user controller/////////////////////////
 exports.getUser = (req, res) =>{
     // get back here for password
     req.profile.salt = undefined;
@@ -21,6 +23,7 @@ exports.getUser = (req, res) =>{
     return res.json(req.profile);
 };
 
+/////////////////////update user controller//////////////////////
 exports.updateUser = (req, res) =>{
     User.findByIdAndUpdate(
         {_id: req.profile._id},
@@ -29,7 +32,7 @@ exports.updateUser = (req, res) =>{
         (err, user) => {
             if(err){
                 return res.status(400).json({
-                    error: "You are not authorized to update profile"
+                    error: "You are not authorized to update profile !"
                 })
             }
             user.salt = undefined;
@@ -38,6 +41,5 @@ exports.updateUser = (req, res) =>{
             user.updatedAt = undefined;
             res.json(user);
         }
-
     )
 }
