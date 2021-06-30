@@ -6,30 +6,25 @@ const MakePaymentsResearchPaperSchema = new mongoose.Schema({
         type:String,
         trim: true,
         required: true,
-        maxlength: 32
     },
     description:{
         type:String,
         trim: true,
         required: true,
-        maxlength: 2000
     },
     authorsnames:{
         type:String,
         required: true,
-        maxlength: 32,
         trim: true
     },
     cardnumber:{
         type: Number,
         required: true,
         trim: true,
-        maxlength:16
     },
     holdersname:{
         type:String,
         required: true,
-        maxlength: 32,
         trim: true
     },
     code:{

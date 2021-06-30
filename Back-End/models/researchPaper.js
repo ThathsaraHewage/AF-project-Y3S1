@@ -6,18 +6,15 @@ const productShema = new mongoose.Schema({
         type:String,
         trim: true,
         required: true,
-        maxlength: 32
     },
     description:{
         type:String,
         trim: true,
         required: true,
-        maxlength: 2000
     },
     authorsnames:{
         type:String,
         required: true,
-        maxlength: 32,
         trim: true
     },
     numberofpages:{

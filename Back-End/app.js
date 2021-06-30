@@ -16,14 +16,18 @@ const workshopPaymentsRoutes = require("./routes/workshopPaymentRoutes");
 // const conferenceRoutes = require("./routes/ConferenceRoutes");
 
 
-//DB Connection
-mongoose.connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-}).then(() => {
-    console.log(`DB Connected successfully !`)
-});
+//database connection
+const connectDB = require('./database/dbConnect');
+connectDB();
+
+// //DB Connection
+// mongoose.connect(process.env.DATABASE, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     useCreateIndex: true
+// }).then(() => {
+//     console.log(`DB Connected successfully !`)
+// });
 
 
 //Middelware
