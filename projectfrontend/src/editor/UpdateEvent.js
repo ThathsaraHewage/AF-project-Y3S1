@@ -151,12 +151,13 @@ const UpdateEvent = ({ match }) => {
           />
 
           <p className="lead mt-3 text-white text-left">Enter Short Description</p>
-          <input
+          <textarea
             type="text"
             className="form-control my-3"
             onChange={handleChangeNote}
             name="note"
             id="note"
+            rows="5"
             value={note}
             autoFocus
             required

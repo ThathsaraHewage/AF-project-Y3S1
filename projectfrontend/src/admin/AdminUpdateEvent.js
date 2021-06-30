@@ -32,6 +32,7 @@ const UpdateEvent = ({ match }) => {
         setEndingtime(data.endingtime);
         setDate(data.date);
         setVenue(data.venue);        
+        setApproved(data.approved);        
       }
     });
   };
@@ -201,14 +202,13 @@ const UpdateEvent = ({ match }) => {
             required
           />
           <p className="lead mt-3 text-white text-left">Approve The Event</p>
-          <input
-            type="text"
-            className="form-control my-2"
-            onChange={handleChangeApproved}
-            value={approved}
-            autoFocus
-            required
-          />
+          <select
+              className="form-control my-2"
+             onChange={handleChangeApproved}
+              value={approved}>
+            <option>No</option>
+            <option>Yes</option>
+          </select>
         </div>
         <div className="d-grid py-4">
           <button

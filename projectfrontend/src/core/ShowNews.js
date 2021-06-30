@@ -109,7 +109,7 @@ const ShowNews = ({ match }) => {
     return (
       <form action="">
         <div className="form-group">
-          <p className="lead mt-3 text-white text-center">{date}</p>
+          <p className="lead mt-3 text-white text-center cory2">{date}</p>
           {/* <input
             type="date"
             className="form-control my-3"
@@ -119,7 +119,7 @@ const ShowNews = ({ match }) => {
             required
           /> */}
 
-          <p className="lead mt-3 text-white text-center">{short}</p>
+          <p className="lead mt-3 text-white text-center cory2">{short}</p>
           {/* <input
             type="text"
             className="form-control my-3"

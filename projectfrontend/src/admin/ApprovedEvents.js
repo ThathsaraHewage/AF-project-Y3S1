@@ -43,7 +43,7 @@ const ManageApprovedEvents = () => {
       </Link>
       <div className="bg-dark text-white rounded">
         <div className="col-12 mt-3 py-3">
-          <h2 className="text-center my-3">Total {} Events</h2>
+          <h2 className="text-center my-3">Total {events.length} Events</h2>
           <div className="container p-3">
             <table border="1" width="100%">
               <tr>

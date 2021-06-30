@@ -94,7 +94,7 @@ const AddNews = () => {
             required
           />
 
-          <p className="lead mt-3 text-white text-left">Enter The Deails</p>
+          <p className="lead mt-3 text-white text-left">Enter The Title</p>
           <input
             type="text"
             className="form-control my-3"
@@ -111,7 +111,7 @@ const AddNews = () => {
             onChange={handleChange3}
             value={full}
             autoFocus
-            required
+            required="true"
             rows="5"
           />
         </div>
