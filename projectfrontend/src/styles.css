@@ -1,0 +1,40 @@
+.btn,
+.jumbotron,
+.nav :hover {
+  border-radius: 0px;
+}
+
+body {
+  background: #22262b;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  
+}
+table,th,td{
+  border: 1px solid #fff;
+  padding: 20px;   
+}
+
+th{
+  background-color: #198754;
+  
+}
+
+tr:hover{
+  background-color: #4b4b4b;
+  
+}
+
+.cory{
+  text-align: left;
+}
+.cory2{
+  font-size: 30px;
+  font-weight: bold;
+}
+.cory3{
+  max-lines: 4;
+}
