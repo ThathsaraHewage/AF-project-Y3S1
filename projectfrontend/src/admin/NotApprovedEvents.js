@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Base from "../core/Base";
 import { Link } from "react-router-dom";
 import { isAutheticated } from "../auth/helper";
-import { deleteEvent,getAllEvents, getAllEventsNo } from "./helper/adminapicall";
+import { deleteEvent, getAllEventsNo } from "./helper/adminapicall";
 
 const ManageNotApprovedEvents = () => {
   const [events, setEvents] = useState([]);
@@ -43,7 +43,7 @@ const ManageNotApprovedEvents = () => {
       </Link>
       <div className="bg-dark text-white rounded">
         <div className="col-12 mt-3 py-3">
-          <h2 className="text-center my-3">Total {} Events</h2>
+          <h2 className="text-center my-3">Total {events.length} Events</h2>
           <div className="container p-3">
             <table border="1" width="100%">
               <tr>
@@ -54,6 +54,7 @@ const ManageNotApprovedEvents = () => {
                 <th> End</th>
                 <th> Date</th>
                 <th> Venue</th>
+                <th> Editor Email</th>
                 <th> Approved</th>
                 <th> Update</th>
                 <th> Delete</th>
@@ -68,6 +69,7 @@ const ManageNotApprovedEvents = () => {
                     <td>{event.endingtime}</td>
                     <td>{event.date}</td>
                     <td>{event.venue}</td>
+                    <td>{event.editoremail}</td>
                     <td>{event.approved}</td>
                     <td>
                     <Link

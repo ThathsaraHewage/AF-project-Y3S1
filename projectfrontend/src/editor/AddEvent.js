@@ -15,8 +15,9 @@ const AddEvent = () => {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const { user, token , role } = isAutheticated();
-
+  const { user, token , email } = isAutheticated();
+  const editoremail = user.email;
+ 
   const goBack = () => {
     return (
       <Link className="btn btn=md btn-dark mb-3" to="/editor/dashboard">
@@ -60,11 +61,11 @@ const AddEvent = () => {
     event.preventDefault();
     setError("");
     setSuccess(false);
-    console.log("FIND DATA", {title,note,startingtime,endingtime,date,venue,approved});
+    console.log("FIND DATA", {title,note,startingtime,endingtime,date,venue,editoremail,approved});
     console.log("FIND ROLE", isAutheticated().user.role);
 
     //backend request fired
-    createEvent(user._id, token, {title,note,startingtime,endingtime,date,venue,approved}).then((data) => {
+    createEvent(user._id, token, {title,note,startingtime,endingtime,date,venue,editoremail,approved}).then((data) => {
       if (data.error) {
         console.log("Entered DATA" , {data});
         setError(true);

@@ -54,6 +54,7 @@ const ManageApprovedEvents = () => {
                 <th> End</th>
                 <th> Date</th>
                 <th> Venue</th>
+                <th> Editor Email</th>
                 <th> Approved</th>
                 <th> Update</th>
                 <th> Delete</th>
@@ -68,6 +69,7 @@ const ManageApprovedEvents = () => {
                     <td>{event.endingtime}</td>
                     <td>{event.date}</td>
                     <td>{event.venue}</td>
+                    <td>{event.editoremail}</td>
                     <td>{event.approved}</td>
                     <td>
                     <Link

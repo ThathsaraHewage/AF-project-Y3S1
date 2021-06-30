@@ -19,6 +19,9 @@ const eventSchema = new mongoose.Schema({
     venue:{
         type: String
     },
+    editoremail:{
+        type: String
+    },
     approved:{
         type: String
     },

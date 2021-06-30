@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { isAutheticated } from "../auth/helper";
 import Base from "../core/Base";
-import { createCategory, createNews } from "./helper/editorapicall";
+import { createNews } from "./helper/editorapicall";
 
 const AddNews = () => {
   const [date, setDate] = useState("");
@@ -12,7 +12,7 @@ const AddNews = () => {
   const [success, setSuccess] = useState(false);
 
   const { user, token } = isAutheticated();
-
+  const email = user.email;
   const goBack = () => {
     return (
       <Link className="btn btn=md btn-dark mb-3" to="/editor/dashboard">
@@ -41,7 +41,7 @@ const AddNews = () => {
     setSuccess(false);
 
     //backend request fired
-    createNews(user._id, token, { date,short,full }).then((data) => {
+    createNews(user._id, token, { date,short,full}).then((data) => {
       if (data.error) {
         setError(true);
         console.log("IF ERROR" , {data});
@@ -52,6 +52,7 @@ const AddNews = () => {
         setShort("");
         setFull("");
         console.log("IF SUCCESS" , {data});
+        console.log("User Email" , {email});
       }
     });
   };

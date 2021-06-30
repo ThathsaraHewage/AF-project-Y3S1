@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-// import ImageHelper from "./helper/ImageHelper";
+import React, { useState} from "react";
 import { Link } from "react-router-dom";
-import { Redirect } from "react-router-dom";
-// import { addItemToCart, removeItemFromCart } from "./helper/cartHelper";
 
 const Card = ({
   news,
-  addtoCart = true,
-  removeFromCart = false,
-  setReload = (f) => f,
-  //   function(f){return f}
-  reload = undefined,
+  // addtoCart = true,
+  // removeFromCart = false,
+  // setReload = (f) => f,
+  // //   function(f){return f}
+  // reload = undefined,
 }) => {
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(news.count);
@@ -62,9 +59,6 @@ const Card = ({
       <div className="card-header lead cory2">{cardDate}</div>
       <div className="card-header lead cory cory2">{cardTitle}</div>
       <div className="card-body">
-        {/* {getARedirect(redirect)} */}
-        {/* <ImageHelper product={product} /> */}
-
         <div className="cory mb-2">
           {cardFull.length > 200 ? (
             <div>

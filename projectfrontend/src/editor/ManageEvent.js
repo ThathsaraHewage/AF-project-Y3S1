@@ -44,7 +44,7 @@ const ManageEvents = () => {
       </Link>
       <div className="bg-dark text-white rounded">
         <div className="col-12 mt-3 py-3">
-          <h2 className="text-center my-3">Total {} Events</h2>
+          <h2 className="text-center my-3">Total {events.length} Events</h2>
           <div className="container p-3">
             <table border="1" width="100%">
               <tr>
@@ -55,6 +55,7 @@ const ManageEvents = () => {
                 <th> End</th>
                 <th> Date</th>
                 <th> Venue</th>
+                <th> Editor Email</th>
                 <th> Approved</th>
                 <th> Update</th>
                 <th> Delete</th>
@@ -69,6 +70,7 @@ const ManageEvents = () => {
                     <td>{event.endingtime}</td>
                     <td>{event.date}</td>
                     <td>{event.venue}</td>
+                    <td>{event.editoremail}</td>
                     <td>{event.approved}</td>
                     <td>
                     <Link
