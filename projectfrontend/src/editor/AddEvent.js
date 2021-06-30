@@ -5,13 +5,18 @@ import Base from "../core/Base";
 import {  createEvent } from "./helper/editorapicall";
 
 const AddEvent = () => {
-  const [title, setTitle] = useState("");
-  const [note, setNote] = useState("");
-  const [startingtime, setStartingtime] = useState("");
-  const [endingtime, setEndingtime] = useState("");
-  const [date, setDate] = useState("");
-  const [venue, setVenue] = useState("");
-  const [approved, setApproved] = useState("No");
+  const [values, setValues] = useState({
+    title: "",
+    note: "",
+    startingtime: "",
+    endingtime: "",
+    date: "",
+    venue: "",
+    approved: "No",
+  });
+  const { title, note, startingtime, endingtime, date, venue, approved} = values;
+
+
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -28,57 +33,37 @@ const AddEvent = () => {
   };
 
   
-  const handleChangeTitle = (event) => {
-    setError("");
-    setTitle(event.target.value);
-  };
-  const handleChangeNote = (event) => {
-    setError("");
-    setNote(event.target.value);
-  };
-  const handleChangeStart = (event) => {
-    setError("");
-    setStartingtime(event.target.value);
-  };
-  const handleChangeEnd = (event) => {
-    setError("");
-    setEndingtime(event.target.value);
-  };
-  const handleChangeDate = (event) => {
-    setError("");
-    setDate(event.target.value);
-  };
-  const handleChangeVenue = (event) => {
-    setError("");
-    setVenue(event.target.value);
-  };
-  const handleChangeApproved = (event) => {
-    setError("");
-    setApproved(event.target.value);
+  const handleChange = name => event => {
+    setValues({ ...values, error: false, [name]: event.target.value });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
-    console.log("FIND DATA", {title,note,startingtime,endingtime,date,venue,editoremail,approved});
-    console.log("FIND ROLE", isAutheticated().user.role);
+    setValues({ ...values});
+
+    // console.log("FIND DATA", {title,note,startingtime,endingtime,date,venue,editoremail,approved});
+    // console.log("FIND ROLE", isAutheticated().user.role);
 
     //backend request fired
     createEvent(user._id, token, {title,note,startingtime,endingtime,date,venue,editoremail,approved}).then((data) => {
       if (data.error) {
-        console.log("Entered DATA" , {data});
+        setValues({ ...values});   
         setError(true);
       } else {
-        console.log("Entered DATA" , {data});
         setError("");
         setSuccess(true);
-        setTitle("");
-        setNote("");
-        setStartingtime("");
-        setEndingtime("");
-        setDate("");
-        setVenue("");
+        setValues({
+          ...values,
+          title: "",
+          note: "",
+          startingtime: "",
+          endingtime: "",
+          date: "",
+          venue: "",
+          approved: "",
+        });
       }
     });
   };
@@ -115,7 +100,7 @@ const AddEvent = () => {
           <input
             type="text"
             className="form-control my-3"
-            onChange={handleChangeTitle}
+            onChange={handleChange("title")}
             name="title"
             id="title"
             value={title}
@@ -126,7 +111,7 @@ const AddEvent = () => {
           <textarea
             type="text"
             className="form-control my-3"
-            onChange={handleChangeNote}
+            onChange={handleChange("note")}
             name="note"
             id="note"
             rows="3"
@@ -139,7 +124,7 @@ const AddEvent = () => {
           <input
             type="time"
             className="form-control my-3"
-            onChange={handleChangeStart}
+            onChange={handleChange("startingtime")}
             value={startingtime}
             autoFocus
             required
@@ -148,7 +133,7 @@ const AddEvent = () => {
           <input
             type="time"
             className="form-control my-3"
-            onChange={handleChangeEnd}
+            onChange={handleChange("endingtime")}
             value={endingtime}
             autoFocus
             required
@@ -157,7 +142,7 @@ const AddEvent = () => {
           <input
             type="date"
             className="form-control my-3"
-            onChange={handleChangeDate}
+            onChange={handleChange("date")}
             value={date}
             autoFocus
             required
@@ -166,7 +151,7 @@ const AddEvent = () => {
           <input
             type="text"
             className="form-control my-2"
-            onChange={handleChangeVenue}
+            onChange={handleChange("venue")}
             value={venue}
             autoFocus
             required

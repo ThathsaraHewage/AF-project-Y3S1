@@ -10,13 +10,17 @@ import { isAutheticated } from "../auth/helper/index";
 const UpdateEvent = ({ match }) => {
   const { user, token } = isAutheticated();
 
-  const [title, setTitle] = useState("");
-  const [note, setNote] = useState("");
-  const [stratingtime, setStratingtime] = useState("");
-  const [endingtime, setEndingtime] = useState("");
-  const [date, setDate] = useState("");
-  const [venue, setVenue] = useState("");
-  const [approved, setApproved] = useState("");
+  const [values, setValues] = useState({
+    title: "",
+    note: "",
+    startingtime: "",
+    endingtime: "",
+    date: "",
+    venue: "",
+    approved: "No",
+  });
+  const { title, note, startingtime, endingtime, date, venue, approved} = values;
+
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -26,13 +30,16 @@ const UpdateEvent = ({ match }) => {
       if (data.error) {
         setError(true);
       } else {
-        setTitle(data.title);
-        setNote(data.note);
-        setStratingtime(data.startingtime);
-        setEndingtime(data.endingtime);
-        setDate(data.date);
-        setVenue(data.venue);        
-        setApproved(data.approved);        
+        setValues({
+          ...values,
+          title: data.title,
+          note: data.note,
+          startingtime: data.startingtime,
+          endingtime: data.endingtime,
+          date: data.date,
+          venue: data.venue,
+          approved: data.approved
+        });        
       }
     });
   };
@@ -56,57 +63,36 @@ const UpdateEvent = ({ match }) => {
     preload(match.params.eventId);
   }, []);
 
-  const handleChangeTitle = (event) => {
-    setError("");
-    setTitle(event.target.value);
-  };
-  const handleChangeNote = (event) => {
-    setError("");
-    setNote(event.target.value);
-  };
-  const handleChangeStart = (event) => {
-    setError("");
-    setStratingtime(event.target.value);
-  };
-  const handleChangeEnd = (event) => {
-    setError("");
-    setEndingtime(event.target.value);
-  };
-  const handleChangeDate = (event) => {
-    setError("");
-    setDate(event.target.value);
-  };
-  const handleChangeVenue = (event) => {
-    setError("");
-    setVenue(event.target.value);
-  };
-  const handleChangeApproved = (event) => {
-    setError("");
-    setApproved(event.target.value);
+  const handleChange = name => event => {
+    setValues({ ...values, error: false, [name]: event.target.value });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
+    setValues({ ...values});
 
     //backend request fired
-    updateEvent(match.params.eventId, user._id, token, {title,note,stratingtime,endingtime,date,venue,approved}).then(
+    updateEvent(match.params.eventId, user._id, token, {title,note,startingtime,endingtime,date,venue}).then(
       (data) => {
         if (data.error) {
+          setValues({ ...values});
           setError(true);
           console.log("IF ERROR" , {data});
         } else {
-          console.log("Entered DATA" , {data});
         setError("");
         setSuccess(true);
-        setTitle("");
-        setNote("");
-        setStratingtime("");
-        setEndingtime("");
-        setDate("");
-        setVenue("");
-        setApproved("");
+        setValues({
+          ...values,
+          title: "",
+          note: "",
+          startingtime: "",
+          endingtime: "",
+          date: "",
+          venue: "",
+          approved: "",
+        });
         }
       }
     );
@@ -144,7 +130,7 @@ const UpdateEvent = ({ match }) => {
           <input
             type="text"
             className="form-control my-3"
-            onChange={handleChangeTitle}
+            onChange={handleChange("title")}
             name="title"
             id="title"
             value={title}
@@ -152,15 +138,15 @@ const UpdateEvent = ({ match }) => {
             required
           />
 
-          <p className="lead mt-3 text-white text-left">Enter Short Description </p>
+          <p className="lead mt-3 text-white text-left">Enter Short Description</p>
           <textarea
             type="text"
             className="form-control my-3"
-            onChange={handleChangeNote}
+            onChange={handleChange("note")}
             name="note"
             id="note"
-            value={note}
             rows="5"
+            value={note}
             autoFocus
             required
           />
@@ -169,8 +155,8 @@ const UpdateEvent = ({ match }) => {
           <input
             type="time"
             className="form-control my-3"
-            onChange={handleChangeStart}
-            value={stratingtime}
+            onChange={handleChange("startingtime")}
+            value={startingtime}
             autoFocus
             required
           />
@@ -178,7 +164,7 @@ const UpdateEvent = ({ match }) => {
           <input
             type="time"
             className="form-control my-3"
-            onChange={handleChangeEnd}
+            onChange={handleChange("endingtime")}
             value={endingtime}
             autoFocus
             required
@@ -187,7 +173,7 @@ const UpdateEvent = ({ match }) => {
           <input
             type="date"
             className="form-control my-3"
-            onChange={handleChangeDate}
+            onChange={handleChange("date")}
             value={date}
             autoFocus
             required
@@ -196,19 +182,19 @@ const UpdateEvent = ({ match }) => {
           <input
             type="text"
             className="form-control my-2"
-            onChange={handleChangeVenue}
+            onChange={handleChange("venue")}
             value={venue}
             autoFocus
             required
           />
-          <p className="lead mt-3 text-white text-left">Approve The Event</p>
+         <p className="lead mt-3 text-white text-left">Approve The Event</p>
           <select
               className="form-control my-2"
-             onChange={handleChangeApproved}
+             onChange={handleChange("approved")}
               value={approved}>
             <option>No</option>
             <option>Yes</option>
-          </select>
+          </select> 
         </div>
         <div className="d-grid py-4">
           <button
@@ -228,8 +214,8 @@ const UpdateEvent = ({ match }) => {
       description="News update section"
       className="container bg-success p-4"
     >
-      <Link to="/editor/dashboard" className="btn btn=md btn-dark mb-3">
-        Editor Home
+      <Link to="/admin/dashboard" className="btn btn=md btn-dark mb-3">
+        Admin Home
       </Link>
       <div className="row bg-dark text-white rounded">
         <div className="col-md-8 offset-md-2 mt-3 py-3">

@@ -7,12 +7,16 @@ import {
 } from "./helper/editorapicall";
 import { isAutheticated } from "../auth/helper/index";
 
+
 const UpdateNews = ({ match }) => {
   const { user, token } = isAutheticated();
 
-  const [date, setDate] = useState("");
-  const [short, setShort] = useState("");
-  const [full, setFull] = useState("");
+  const [values, setValues] = useState({
+    date: "",
+    short: "",
+    full: ""
+  });
+  const { date, short, full} = values;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -22,9 +26,12 @@ const UpdateNews = ({ match }) => {
       if (data.error) {
         setError(true);
       } else {
-         setDate(data.date);
-         setShort(data.short);
-         setFull(data.full);        
+        setValues({
+          ...values,
+          date: data.date,
+          short: data.short,
+          full: data.full
+        });       
       }
     });
   };
@@ -48,42 +55,35 @@ const UpdateNews = ({ match }) => {
     preload(match.params.newsId);
   }, []);
 
-  const handleChange1 = (event) => {
-    setError("");
-    setDate(event.target.value);
-  };
-  const handleChange2 = (event) => {
-    setError("");
-    setShort(event.target.value);
-  };
-  const handleChange3 = (event) => {
-    setError("");
-    setFull(event.target.value);
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
+    setValues({ ...values});
 
     //backend request fired
     updateNews(match.params.newsId, user._id, token, { date,short,full }).then(
       (data) => {
         if (data.error) {
+          setValues({ ...values});
           setError(true);
           console.log("IF ERROR" , {data});
         } else {
-          setError("");
           setSuccess(true);
-          setDate("");
-          setShort("");
-          setFull("");
-          console.log("IF SUCCESS" , {data});
+          setValues({
+          ...values,
+          date: "",
+          short: "",
+          full: ""
+        });
         }
       }
     );
   };
-
   const successMessage = () => {
     if (success) {
       return (
@@ -116,7 +116,7 @@ const UpdateNews = ({ match }) => {
           <input
             type="date"
             className="form-control my-3"
-            onChange={handleChange1}
+            onChange={handleChange("date")}
             value={date}
             autoFocus
             required
@@ -126,7 +126,7 @@ const UpdateNews = ({ match }) => {
           <input
             type="text"
             className="form-control my-3"
-            onChange={handleChange2}
+            onChange={handleChange("short")}
             value={short}
             autoFocus
             required
@@ -136,7 +136,7 @@ const UpdateNews = ({ match }) => {
           <textarea
             type="text"
             className="form-control my-3"
-            onChange={handleChange3}
+            onChange={handleChange("full")}
             value={full}
             autoFocus
             required

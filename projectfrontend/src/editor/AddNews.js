@@ -5,14 +5,17 @@ import Base from "../core/Base";
 import { createNews } from "./helper/editorapicall";
 
 const AddNews = () => {
-  const [date, setDate] = useState("");
-  const [short, setShort] = useState("");
-  const [full, setFull] = useState("");
+  const [values, setValues] = useState({
+    date: "",
+    short: "",
+    full: ""
+  });
+  const { date, short, full} = values;
+
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const { user, token } = isAutheticated();
-  const email = user.email;
   const goBack = () => {
     return (
       <Link className="btn btn=md btn-dark mb-3" to="/editor/dashboard">
@@ -22,37 +25,29 @@ const AddNews = () => {
     );
   };
 
-  const handleChange1 = (event) => {
-    setError("");
-    setDate(event.target.value);
-  };
-  const handleChange2 = (event) => {
-    setError("");
-    setShort(event.target.value);
-  };
-  const handleChange3 = (event) => {
-    setError("");
-    setFull(event.target.value);
+  const handleChange = name => event => {
+    setValues({ ...values, error: false, [name]: event.target.value });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
-
+    setValues({ ...values});
     //backend request fired
     createNews(user._id, token, { date,short,full}).then((data) => {
       if (data.error) {
+        setValues({ ...values});
         setError(true);
         console.log("IF ERROR" , {data});
       } else {
-        setError("");
         setSuccess(true);
-        setDate("");
-        setShort("");
-        setFull("");
-        console.log("IF SUCCESS" , {data});
-        console.log("User Email" , {email});
+        setValues({
+        ...values,
+        date: "",
+        short: "",
+        full: ""
+      });
       }
     });
   };
@@ -89,7 +84,7 @@ const AddNews = () => {
           <input
             type="date"
             className="form-control my-3"
-            onChange={handleChange1}
+            onChange={handleChange("date")}
             value={date}
             autoFocus
             required
@@ -99,7 +94,7 @@ const AddNews = () => {
           <input
             type="text"
             className="form-control my-3"
-            onChange={handleChange2}
+            onChange={handleChange("short")}
             value={short}
             autoFocus
             required
@@ -109,7 +104,7 @@ const AddNews = () => {
           <textarea
             type="text"
             className="form-control my-3"
-            onChange={handleChange3}
+            onChange={handleChange("full")}
             value={full}
             autoFocus
             required="true"
